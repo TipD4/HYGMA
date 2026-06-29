@@ -1,0 +1,32 @@
+{
+  "agent_params": [
+    36556
+  ],
+  "agent_params_T": [
+    0
+  ],
+  "hgcn_params": [
+    104632
+  ],
+  "hgcn_params_T": [
+    0
+  ],
+  "mixer_params": [
+    31521
+  ],
+  "mixer_params_T": [
+    0
+  ],
+  "total_params": [
+    172709
+  ],
+  "total_params_T": [
+    0
+  ],
+  "trainable_params": [
+    172709
+  ],
+  "trainable_params_T": [
+    0
+  ]
+}
