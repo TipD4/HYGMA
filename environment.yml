@@ -21,5 +21,6 @@ dependencies:
     - docopt==0.6.2
     - munch
     - jsonpickle
+    - websocket-client==0.59.0
     - pysc2
     - smac
