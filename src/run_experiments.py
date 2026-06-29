@@ -1,8 +1,8 @@
 """HYGMA Experiment Launcher - runs experiments sequentially."""
 import subprocess, sys, os, datetime
 
-PYTHON = r"D:\Soft\Anaconda\envs\hygma\python.exe"
-SRC = r"D:\Project\paper\代码\HYGMA\src"
+SRC = os.path.dirname(os.path.abspath(__file__))
+PYTHON = sys.executable
 
 experiments = [
     # Phase A: 3m

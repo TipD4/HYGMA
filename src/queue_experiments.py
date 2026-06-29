@@ -1,9 +1,9 @@
 """Sequential experiment queue — clustering_interval=50000 so clustering actually fires."""
 import subprocess, os, sys, datetime
 
-PY = r"D:\Soft\Anaconda\envs\hygma\python.exe"
-SRC = r"D:\Project\paper\代码\HYGMA\src"
+SRC = os.path.dirname(os.path.abspath(__file__))
 os.chdir(SRC)
+PY = sys.executable
 
 experiments = [
     ("B1", "5m_vs_6m dynamic",

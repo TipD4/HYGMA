@@ -8,9 +8,9 @@ set MODE=%2
 set SEED=%3
 if "%SEED%"=="" set SEED=1
 
-set PYTHON=D:\Soft\Anaconda\envs\hygma\python.exe
-set SRC=D:\Project\paper\代码\HYGMA\src
-set LOGDIR=D:\Project\paper\代码\HYGMA\results
+set PYTHON=python
+set SRC=%~dp0src
+set LOGDIR=%~dp0results
 
 echo ============================================
 echo HYGMA Experiment: map=%MAP% mode=%MODE% seed=%SEED%

@@ -3,9 +3,9 @@ REM ============================================================
 REM HYGMA Experiment Launcher - Phase A+B
 REM Each run: 100K timesteps, ~35-45 min CPU
 REM ============================================================
-set PYTHON=D:\Soft\Anaconda\envs\hygma\python.exe
-set SRC=D:\Project\paper\代码\HYGMA\src
-set LOGDIR=D:\Project\paper\代码\HYGMA\results
+set PYTHON=python
+set SRC=%~dp0src
+set LOGDIR=%~dp0results
 
 echo HYGMA Experiment Matrix
 echo ========================

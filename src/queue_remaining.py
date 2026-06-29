@@ -1,9 +1,9 @@
 """Remaining experiments: B1(retry), B4, A2, A4"""
 import subprocess, os, sys, datetime
 
-PY = r"D:\Soft\Anaconda\envs\hygma\python.exe"
-SRC = r"D:\Project\paper\代码\HYGMA\src"
+SRC = os.path.dirname(os.path.abspath(__file__))
 os.chdir(SRC)
+PY = sys.executable
 
 experiments = [
     ("B1-retry", "5m_vs_6m dynamic (retry)",
