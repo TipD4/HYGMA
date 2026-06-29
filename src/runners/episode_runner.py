@@ -121,3 +121,9 @@ class EpisodeRunner:
             if k != "n_episodes":
                 self.logger.log_stat(prefix + k + "_mean" , v/stats["n_episodes"], self.t_env)
         stats.clear()
+
+        # 记录聚类信息（仅 HYGMA controller 有）
+        if hasattr(self.mac, 'last_clustering_info') and self.mac.last_clustering_info:
+            for k, v in self.mac.last_clustering_info.items():
+                if isinstance(v, (int, float)):  # 只记录数值型统计
+                    self.logger.log_stat("clustering_" + k, v, self.t_env)

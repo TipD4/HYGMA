@@ -27,6 +27,13 @@ class HGCNQLearner:
         self.group_change_history = []
         self.last_save_step = -self.args.save_model_interval
 
+        # Stage 3: Attention collector for mechanism verification
+        attention_save_path = os.path.join("..", "results", "attention_data")
+        self.attention_collector = AttentionDataCollector(save_path=attention_save_path)
+        self.attention_record_interval = getattr(args, "attention_record_interval", 5000)
+        self.last_attention_record = -self.attention_record_interval
+        self.logger.console_logger.info(f"AttentionDataCollector initialized: interval={self.attention_record_interval}, path={attention_save_path}")
+
         self.mixer = None
         if args.mixer is not None:
             if args.mixer == "qmix":
@@ -125,6 +132,17 @@ class HGCNQLearner:
             agent_outs = self.mac.forward(batch, t=t, t_env=self.t_env)
             mac_out.append(agent_outs)
         mac_out = th.stack(mac_out, dim=1)  # Concat over time
+
+        # Stage 3: Record attention weights periodically
+        if t_env - self.last_attention_record >= self.attention_record_interval:
+            self.last_attention_record = t_env
+            attn_weights = self.mac.get_attention_weights()
+            agent_groups = self.mac.agent_groups
+            if attn_weights is not None:
+                for layer_idx, weights in enumerate(attn_weights):
+                    self.attention_collector.update_data(weights, t_env, layer_idx, agent_groups)
+                filename = f"attention_t{t_env}.h5"
+                self.attention_collector.save_data(filename)
 
         hgcn_time = time.time() - hgcn_forward_start
 

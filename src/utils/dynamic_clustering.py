@@ -20,10 +20,10 @@ class DynamicSpectralClustering:
         batch_size, time_steps, state_dim = state_history.shape
 
         # 重塑状态历史以包含时间信息
-        reshaped_states = state_history.view(batch_size, -1).cpu().numpy()
+        reshaped_states = state_history.reshape(batch_size, -1).cpu().numpy()
 
         # 找到最佳聚类数量
-        best_n_clusters, best_labels = self._find_best_clustering(reshaped_states)
+        best_n_clusters, best_labels, best_score = self._find_best_clustering(reshaped_states)
 
         # 将标签转换为组列表
         new_groups = [[] for _ in range(best_n_clusters)]
@@ -34,7 +34,7 @@ class DynamicSpectralClustering:
         # 移除空组
         new_groups = [group for group in new_groups if group]
 
-        return new_groups
+        return new_groups, best_score, best_n_clusters
 
     def _find_best_clustering(self, data):
         best_score = -1
@@ -51,25 +51,25 @@ class DynamicSpectralClustering:
                 best_n_clusters = n_clusters
                 best_labels = labels
 
-        return best_n_clusters, best_labels
+        return best_n_clusters, best_labels, best_score
 
     def update_groups(self, state_history, stability_threshold):
-        new_groups = self.cluster(state_history)
+        new_groups, silhouette, n_clusters = self.cluster(state_history)
 
         if self.current_groups is None:
             self.current_groups = new_groups
-            return True, new_groups, self.n_agents
+            return True, new_groups, self.n_agents, silhouette, n_clusters, "first_init"
 
         num_moved = self._count_moved_agents(self.current_groups, new_groups)
 
         if num_moved == 0:
-            return False, self.current_groups, num_moved
+            return False, self.current_groups, num_moved, silhouette, n_clusters, "same_group"
 
         if num_moved / self.n_agents < stability_threshold:
-            return False, self.current_groups, num_moved
+            return False, self.current_groups, num_moved, silhouette, n_clusters, "below_threshold"
 
         self.current_groups = new_groups
-        return True, new_groups, num_moved
+        return True, new_groups, num_moved, silhouette, n_clusters, "updated"
 
     def _count_moved_agents(self, old_groups, new_groups):
         old_set = {frozenset(group) for group in old_groups}

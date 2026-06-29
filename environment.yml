@@ -1,0 +1,25 @@
+name: hygma
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - numpy<2.0
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - h5py
+  - pyyaml
+  - pillow
+  - requests
+  - gitpython
+  - tqdm
+  - pip:
+    - sacred==0.8.5
+    - docopt==0.6.2
+    - munch
+    - jsonpickle
+    - pysc2
+    - smac

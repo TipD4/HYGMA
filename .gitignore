@@ -1,0 +1,27 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Results / output
+results/
+src/results/
+
+# Environment
+.env
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test files
+test.txt
+
+# Docker generated
+docker/download_sc2.sh

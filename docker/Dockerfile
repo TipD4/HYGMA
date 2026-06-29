@@ -1,51 +1,72 @@
-FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu16.04
-MAINTAINER Tabish Rashid
+# HYGMA Mechanism Verification — Docker Environment
+# Base: CUDA 11.7 + Ubuntu 22.04 (matches local torch==1.13.0+cu117)
+# Python 3.9 + PyTorch + scikit-learn + h5py + SMAC
 
-# CUDA includes
-ENV CUDA_PATH /usr/local/cuda
-ENV CUDA_INCLUDE_PATH /usr/local/cuda/include
-ENV CUDA_LIBRARY_PATH /usr/local/cuda/lib64
+FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
-# Ubuntu Packages
-RUN apt-get update -y && apt-get install software-properties-common -y && \
-    add-apt-repository -y multiverse && apt-get update -y && apt-get upgrade -y && \
-    apt-get install -y apt-utils nano vim man build-essential wget sudo && \
-    rm -rf /var/lib/apt/lists/*
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
 
-# Install curl and other dependencies
-RUN apt-get update -y && apt-get install -y curl libssl-dev openssl libopenblas-dev \
-    libhdf5-dev hdf5-helpers hdf5-tools libhdf5-serial-dev libprotobuf-dev protobuf-compiler git
-RUN curl -sk https://raw.githubusercontent.com/torch/distro/master/install-deps | bash && \
-    rm -rf /var/lib/apt/lists/*
+# ---- System dependencies ----
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget curl git \
+    build-essential \
+    libopenblas-dev \
+    libhdf5-dev \
+    libssl-dev \
+    python3.9 python3.9-dev python3.9-distutils \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install python3 pip3
-RUN apt-get update
-RUN apt-get -y install python3
-RUN apt-get -y install python3-pip
-RUN pip3 install --upgrade pip
+# ---- Python setup ----
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.9
 
-# Python packages we use (or used at one point...)
-RUN pip3 install numpy scipy pyyaml matplotlib
-RUN pip3 install imageio
-RUN pip3 install tensorboard-logger
-RUN pip3 install pygame
+# ---- PyTorch (CUDA 11.7) ----
+RUN pip3 install --no-cache-dir \
+    torch==1.13.0+cu117 \
+    --extra-index-url https://download.pytorch.org/whl/cu117
 
-RUN mkdir /install
-WORKDIR /install
+# ---- Core ML + scientific ----
+RUN pip3 install --no-cache-dir \
+    numpy==1.24.3 \
+    scipy==1.10.1 \
+    scikit-learn==1.2.2 \
+    matplotlib==3.7.1 \
+    pandas==2.0.3 \
+    h5py==3.9.0
 
-RUN pip3 install jsonpickle==0.9.6
-# install Sacred (from OxWhirl fork)
-RUN pip3 install setuptools
-RUN git clone https://github.com/oxwhirl/sacred.git /install/sacred && cd /install/sacred && python3 setup.py install
+# ---- SMAC + StarCraft II interface ----
+RUN pip3 install --no-cache-dir \
+    pysc2==3.0.0 \
+    absl-py \
+    pygame
 
-#### -------------------------------------------------------------------
-#### install pytorch
-#### -------------------------------------------------------------------
-RUN pip3 install torch
-RUN pip3 install torchvision snakeviz pytest probscale
+# ---- Sacred (experiment tracking) ----
+RUN pip3 install --no-cache-dir \
+    sacred==0.8.5 \
+    docopt==0.6.2 \
+    munch \
+    jsonpickle \
+    GitPython
 
-## -- SMAC
-RUN pip3 install git+https://github.com/oxwhirl/smac.git
-ENV SC2PATH /pymarl/3rdparty/StarCraftII
+# ---- Additional HYGMA dependencies ----
+RUN pip3 install --no-cache-dir \
+    pyyaml==6.0 \
+    Pillow \
+    requests \
+    imageio \
+    tensorboard-logger
 
-WORKDIR /pymarl
+# ---- Environment variables ----
+ENV SC2PATH=/root/StarCraftII
+ENV PYTHONPATH=/workspace/src:$PYTHONPATH
+
+# ---- Workspace ----
+RUN mkdir -p /workspace /root/StarCraftII /results /data
+WORKDIR /workspace
+
+# ---- Entrypoint ----
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]

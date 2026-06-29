@@ -6,7 +6,9 @@ from components.action_selectors import REGISTRY as action_REGISTRY
 import torch as th
 from utils.HGCN import HGCN
 from utils.dynamic_clustering import DynamicSpectralClustering
+from utils.clustering_csv_logger import ClusteringCSVLogger
 import torch.nn as nn
+import os
 
 
 class HYGMA(nn.Module):
@@ -26,9 +28,29 @@ class HYGMA(nn.Module):
         self.clustering_interval = args.clustering_interval
         self.stability_threshold = args.stability_threshold
 
-        # 初始化agent_groups
-        self.agent_groups = [list(range(self.n_agents))] # 所有智能体在一组
-        # self.agent_groups = [[i] for i in range(self.n_agents)] # 智能体独立一组
+        # 初始化分组模式与 agent_groups
+        self.grouping_mode = getattr(args, "grouping_mode", "dynamic")
+        if self.grouping_mode == "each_alone":
+            self.agent_groups = [[i] for i in range(self.n_agents)]  # 每人独立一组
+        else:
+            self.agent_groups = [list(range(self.n_agents))]  # all_one 或 dynamic 初始同组
+        self.last_clustering_info = None
+
+        # Stage 2: 聚类活性统计
+        self.clustering_stats = {
+            "check_count": 0,       # 聚类检查触发次数
+            "update_count": 0,      # 实际分组更新次数
+            "total_moved": 0,       # 累计移动 agent 数
+            "group_sizes": []       # 每次更新后的 group 大小分布快照
+        }
+
+        # Stage 3: 拒绝原因追踪 + 分组多样性
+        self.rejection_reasons = {}     # reason → count
+        self.group_configs_seen = set()  # frozenset of all unique group configs
+
+        # CSV Logger (延迟初始化，等 seed / map 信息可用时再创建)
+        self.clustering_csv = None
+        self._csv_logger_initialized = False
 
         self._build_agents(self.input_shape)
         # 初始化HGCN
@@ -64,33 +86,92 @@ class HYGMA(nn.Module):
         agent_inputs = self._build_inputs(ep_batch, t)
         avail_actions = ep_batch["avail_actions"][:, t]
 
-        if not test_mode and self.training_steps < self.fix_grouping_steps:
+        if self.grouping_mode == "dynamic" and not test_mode and self.training_steps >= self.fix_grouping_steps:
             if t_env - self.last_clustering_step >= self.clustering_interval:
                 start_time = time.time()
+                self.clustering_stats["check_count"] += 1  # Stage 2: 统计聚类检查次数
+                # 第一次检查时初始化 CSV logger
+                if not self._csv_logger_initialized:
+                    try:
+                        map_name = self.args.env_args["map_name"]
+                    except (TypeError, KeyError):
+                        map_name = getattr(self.args.env_args, "map_name", "unknown")
+                    mode = self.grouping_mode
+                    seed = getattr(self.args, "seed", 0)
+                    log_dir = os.path.join("..", "results", "clustering_logs")
+                    self.clustering_csv = ClusteringCSVLogger(log_dir, map_name, mode, seed)
+                    self._csv_logger_initialized = True
                 print(f"Clustering check triggered at t_env: {t_env}, interval = {self.clustering_interval}, "
                       f"Last clustering step: {self.last_clustering_step}, "
                       f"Time since last clustering: {t_env - self.last_clustering_step}")
                 print(f"now groups: {self.agent_groups}")
 
                 state_history = self._get_state_history(ep_batch, t)
-                groups_updated, new_groups, num_moved = self.clustering.update_groups(state_history,
+                try:
+                    groups_updated, new_groups, num_moved, silhouette, n_clusters, reject_reason = self.clustering.update_groups(state_history,
                                                                                       self.stability_threshold)
 
                 if groups_updated:
                     self.agent_groups = new_groups
                     self.last_clustering_step = t_env
+                    # Stage 2: 统计实际更新
+                    self.clustering_stats["update_count"] += 1
+                    self.clustering_stats["total_moved"] += num_moved
+                    self.clustering_stats["group_sizes"].append([len(g) for g in new_groups]); self.rejection_reasons[reject_reason] = self.rejection_reasons.get(reject_reason, 0) + 1; group_key = tuple(sorted(tuple(sorted(g)) for g in new_groups)); self.group_configs_seen.add(group_key)
                     # 更新HGCN的组信息，但不重置权重
                     self.hgcn.update_groups(len(new_groups))
                     print(
-                        f"Groups updated at t_env: {t_env}. Moved agents: {num_moved}/{self.n_agents}, new groups: {self.agent_groups}")
+                        f"Groups updated at t_env: {t_env}. Moved agents: {num_moved}/{self.n_agents}, silhouette={silhouette:.3f}, n_clusters={n_clusters}, reason={reject_reason}, diversity={len(self.group_configs_seen)}, new groups: {self.agent_groups}")
                 else:
+                    self.rejection_reasons[reject_reason] = self.rejection_reasons.get(reject_reason, 0) + 1
                     if num_moved > 0:
                         print(
-                            f"Groups remained unchanged at t_env: {t_env} due to stability threshold. Potential moves: {num_moved}/{self.n_agents}")
+                            f"Groups unchanged at t_env: {t_env}. Reason: {reject_reason}. Potential moves: {num_moved}/{self.n_agents}, silhouette={silhouette:.3f}")
                     else:
-                        print(f"Groups remained unchanged at t_env: {t_env}. No potential moves detected.")
+                        print(f"Groups unchanged at t_env: {t_env}. Reason: {reject_reason}. No potential moves, silhouette={silhouette:.3f}")
                 clustering_time = time.time() - start_time
                 print(f"Clustering at step {t_env} took {clustering_time:.4f} seconds")
+                self.last_clustering_info = {
+                    "num_groups": len(self.agent_groups),
+                    "num_moved": num_moved,
+                    "silhouette_score": silhouette,
+                    "n_clusters": n_clusters,
+                    "rejection_reason": reject_reason,
+                    "check_count": self.clustering_stats["check_count"],
+                    "update_count": self.clustering_stats["update_count"],
+                    "total_moved_cum": self.clustering_stats["total_moved"],
+                    "diversity": len(self.group_configs_seen),
+                }
+                # CSV logging
+                self.clustering_csv.log_check(
+                    t_env=t_env,
+                    check_count=self.clustering_stats["check_count"],
+                    update_count=self.clustering_stats["update_count"],
+                    groups_updated=groups_updated,
+                    num_moved=num_moved,
+                    num_groups=len(self.agent_groups),
+                    group_sizes=[len(g) for g in self.agent_groups],
+                    current_groups=self.agent_groups,
+                    silhouette_score=silhouette,
+                    n_clusters_chosen=n_clusters,
+                    latency_ms=clustering_time * 1000,
+                    rejection_reason=reject_reason,
+                    stability_threshold=self.stability_threshold,
+                    group_diversity_so_far=len(self.group_configs_seen),
+                )
+            else:
+                # 即使未触发 interval，也更新累计统计到 last_clustering_info
+                self.last_clustering_info = {
+                    "num_groups": len(self.agent_groups),
+                    "num_moved": 0,
+                    "silhouette_score": None,
+                    "n_clusters": len(self.agent_groups),
+                    "rejection_reason": "not_checked",
+                    "check_count": self.clustering_stats["check_count"],
+                    "update_count": self.clustering_stats["update_count"],
+                    "total_moved_cum": self.clustering_stats["total_moved"],
+                    "diversity": len(self.group_configs_seen),
+                }
 
         # 重塑 agent_inputs，确保其形状适合 HGCN
         agent_inputs = agent_inputs.view(ep_batch.batch_size, self.n_agents, -1)
@@ -210,3 +291,4 @@ class HYGMA(nn.Module):
         if self.args.obs_agent_id:
             input_shape += self.n_agents
         return input_shape
+# M3 instrumentation checkpoint

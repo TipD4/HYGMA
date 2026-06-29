@@ -1,0 +1,35 @@
+# HYGMA Mechanism Verification — Docker Compose
+# Usage:
+#   docker compose build
+#   docker compose run --rm hygma bash          # interactive shell
+#   docker compose run --rm hygma python3 src/queue_verify_stageA.py
+#
+# Prerequisites:
+#   1. StarCraft II 4.10 extracted to ./sc2/ (download from Blizzard)
+#   2. SMAC maps extracted to ./sc2/Maps/SMAC_Maps/
+
+version: "3.8"
+
+services:
+  hygma:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: hygma-mechanism:latest
+    container_name: hygma_verify
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - SC2PATH=/root/StarCraftII
+      - PYTHONPATH=/workspace/src:$PYTHONPATH
+    volumes:
+      # Mount the full project (code + configs)
+      - .:/workspace
+      # Mount SC2 (host path: ./sc2/ → container: /root/StarCraftII)
+      - ./sc2:/root/StarCraftII:ro
+      # Results persist outside container
+      - ./results:/workspace/results
+    working_dir: /workspace
+    shm_size: 2gb
+    # For CPU-only experiments, remove "runtime: nvidia" above and use:
+    # command: bash
