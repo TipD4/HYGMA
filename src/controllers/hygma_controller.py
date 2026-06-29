@@ -107,7 +107,18 @@ class HYGMA(nn.Module):
                 print(f"now groups: {self.agent_groups}")
 
                 state_history = self._get_state_history(ep_batch, t)
-                groups_updated, new_groups, num_moved, silhouette, n_clusters, reject_reason = self.clustering.update_groups(state_history, self.stability_threshold)
+                try:
+                    groups_updated, new_groups, num_moved, silhouette, n_clusters, reject_reason = self.clustering.update_groups(state_history, self.stability_threshold)
+                except Exception as e:
+                    print(f"Clustering failed at t_env={t_env}: {e}")
+                    self.last_clustering_step = t_env
+                    self.rejection_reasons["cluster_failed"] = self.rejection_reasons.get("cluster_failed", 0) + 1
+                    groups_updated = False
+                    new_groups = self.agent_groups
+                    num_moved = 0
+                    silhouette = -1.0
+                    n_clusters = len(self.agent_groups)
+                    reject_reason = "cluster_failed"
 
                 if groups_updated:
                     self.agent_groups = new_groups
