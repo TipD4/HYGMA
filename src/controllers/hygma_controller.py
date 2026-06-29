@@ -107,9 +107,7 @@ class HYGMA(nn.Module):
                 print(f"now groups: {self.agent_groups}")
 
                 state_history = self._get_state_history(ep_batch, t)
-                try:
-                    groups_updated, new_groups, num_moved, silhouette, n_clusters, reject_reason = self.clustering.update_groups(state_history,
-                                                                                      self.stability_threshold)
+                groups_updated, new_groups, num_moved, silhouette, n_clusters, reject_reason = self.clustering.update_groups(state_history, self.stability_threshold)
 
                 if groups_updated:
                     self.agent_groups = new_groups
