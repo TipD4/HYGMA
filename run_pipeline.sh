@@ -16,6 +16,17 @@ if [ -z "${SC2PATH}" ]; then
     export SC2PATH
 fi
 
+# === Clean up leftover SC2 processes from previous runs ===
+echo "Cleaning up leftover SC2 processes..."
+SC2_PIDS=$(pgrep -f "SC2_x64\|SC2.exe" 2>/dev/null || true)
+if [ -n "${SC2_PIDS}" ]; then
+    echo "  Killing zombie SC2 processes: ${SC2_PIDS}"
+    kill -9 ${SC2_PIDS} 2>/dev/null || true
+    sleep 2
+else
+    echo "  No leftover SC2 processes found"
+fi
+
 # === Conda activation (auto-detect or skip if already in conda) ===
 _conda_activated=false
 _found_conda_sh=""
