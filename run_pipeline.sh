@@ -17,19 +17,56 @@ if [ -z "${SC2PATH}" ]; then
 fi
 
 # === Conda activation (auto-detect or skip if already in conda) ===
-if [ -z "${CONDA_DEFAULT_ENV}" ]; then
-    # Try common conda locations
-    for conda_base in "${HOME}/Tool/anaconda3" "${HOME}/anaconda3" "${HOME}/miniconda3" /opt/conda; do
-        if [ -f "${conda_base}/etc/profile.d/conda.sh" ]; then
-            source "${conda_base}/etc/profile.d/conda.sh"
+_conda_activated=false
+_found_conda_sh=""
+
+if [ "${CONDA_DEFAULT_ENV}" = "hygma" ]; then
+    _conda_activated=true
+    echo "Conda env 'hygma' already active"
+else
+    # Search broadly for conda.sh — covers common install locations
+    for _candidate in \
+        "/mnt/storage/qianhaoming/Tool/anaconda3" \
+        "${HOME}/Tool/anaconda3" \
+        "${HOME}/anaconda3" \
+        "${HOME}/miniconda3" \
+        /opt/conda \
+        /opt/anaconda3 \
+        /usr/local/anaconda3; do
+        if [ -f "${_candidate}/etc/profile.d/conda.sh" ]; then
+            _found_conda_sh="${_candidate}/etc/profile.d/conda.sh"
+            echo "Found conda at: ${_candidate}"
             break
         fi
     done
+
+    # Fallback: search under common parent dirs (depth 3)
+    if [ -z "${_found_conda_sh}" ]; then
+        for _parent in /mnt /home /opt /data; do
+            _found_conda_sh=$(find "${_parent}" -maxdepth 4 -path '*/etc/profile.d/conda.sh' -type f 2>/dev/null | head -1)
+            [ -n "${_found_conda_sh}" ] && echo "Found conda (fallback): ${_found_conda_sh}" && break
+        done
+    fi
+
+    if [ -n "${_found_conda_sh}" ]; then
+        source "${_found_conda_sh}"
+        conda activate hygma 2>/dev/null && _conda_activated=true
+    fi
 fi
-# Activate hygma env if not already active
-if [ "${CONDA_DEFAULT_ENV}" != "hygma" ]; then
-    conda activate hygma 2>/dev/null || echo "Warning: could not activate hygma conda env, using current python"
+
+if [ "${_conda_activated}" != "true" ]; then
+    echo "ERROR: Cannot activate hygma conda environment."
+    echo "  Run 'conda env create -f environment.yml' first, or"
+    echo "  source <conda_path>/etc/profile.d/conda.sh && conda activate hygma"
+    exit 1
 fi
+
+# Verify key dependencies are available
+echo "Verifying dependencies..."
+python -c "import sacred; import sklearn; import yaml; import torch; print('  OK: sacred, sklearn, yaml, torch')" || {
+    echo "ERROR: Missing dependencies. Run: conda env update -f environment.yml"
+    exit 1
+}
 
 cd "${SRC}"
 
