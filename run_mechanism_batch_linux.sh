@@ -62,8 +62,12 @@ activate_hygma_env() {
     fi
 
     # shellcheck disable=SC1090
+    # Some conda activation hooks (e.g. MKL) read unset vars and break under `set -u`.
+    # Relax nounset temporarily during activation, then restore it.
+    set +u
     source "${conda_sh}"
     conda activate hygma
+    set -u
 }
 
 if [[ -n "${HYGMA_PYTHON:-}" ]]; then
