@@ -62,6 +62,14 @@ lambda_attention: 0.01
 # Stage 3: Mechanism verification instrumentation
 attention_record_interval: 5000     # save attention + groups every N env steps
 
+# Stage 4: mechanism-first experiments
+# 聚类最少触发条件：使动态聚类有机会发生（先验证“是否发生”，再看收益）
+clustering_probe_mode: "on"
+# 统一记录窗口：确保动态聚类有足够机会变化（仅在 mechanism experiments 使用）
+clustering_min_checks: 1
+clustering_min_updates: 0
+clustering_min_steps: 20000
+
 name: "hygma"
 
 
