@@ -1,0 +1,684 @@
+START 2026-06-30T16:01:25.901863
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/bin/python main.py --config=hygma --env-config=sc2 with env_args.map_name=3m t_max=100000 test_interval=5000 attention_record_interval=5000 seed=2 grouping_mode=dynamic clustering_interval=5000 clustering_probe_mode=on clustering_min_steps=100000 clustering_min_checks=20 clustering_min_updates=1
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sacred/dependencies.py:11: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+/mnt/storage/qianhaoming/paper/HYGMA/src/main.py:77: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  if isinstance(v, collections.Mapping):
+[INFO 16:01:27] root Saving to FileStorageObserver in results/sacred.
+[DEBUG 16:01:28] pymarl Using capture mode "fd"
+[INFO 16:01:28] pymarl Running command 'my_main'
+[INFO 16:01:28] pymarl Started run with ID "11"
+[DEBUG 16:01:28] pymarl Starting Heartbeat
+[DEBUG 16:01:28] my_main Started
+[INFO 16:01:28] my_main Experiment Parameters:
+[INFO 16:01:28] my_main 
+
+{   'action_selector': 'epsilon_greedy',
+    'agent': 'rnn',
+    'agent_output_type': 'q',
+    'attention_record_interval': 5000,
+    'batch_size': 128,
+    'batch_size_run': 1,
+    'behavior_history_length': 5000,
+    'buffer_cpu_only': True,
+    'buffer_size': 5000,
+    'checkpoint_path': '',
+    'clustering_interval': 5000,
+    'clustering_min_checks': 20,
+    'clustering_min_steps': 100000,
+    'clustering_min_updates': 1,
+    'clustering_probe_mode': 'on',
+    'critic_lr': 0.0005,
+    'double_q': True,
+    'env': 'sc2',
+    'env_args': {   'continuing_episode': False,
+                    'debug': False,
+                    'difficulty': '7',
+                    'game_version': None,
+                    'heuristic_ai': False,
+                    'heuristic_rest': False,
+                    'map_name': '3m',
+                    'move_amount': 2,
+                    'obs_all_health': True,
+                    'obs_instead_of_state': False,
+                    'obs_last_action': True,
+                    'obs_own_health': True,
+                    'obs_pathing_grid': False,
+                    'obs_terrain_height': False,
+                    'obs_timestep_number': False,
+                    'replay_dir': '/home/lcq/project/GHMIX-master/replay',
+                    'replay_prefix': '',
+                    'reward_death_value': 10,
+                    'reward_defeat': 0,
+                    'reward_negative_scale': 0.5,
+                    'reward_only_positive': True,
+                    'reward_scale': True,
+                    'reward_scale_rate': 20,
+                    'reward_sparse': False,
+                    'reward_win': 200,
+                    'seed': 2,
+                    'state_last_action': True,
+                    'state_timestep_number': False,
+                    'step_mul': 8},
+    'epsilon_anneal_time': 100000,
+    'epsilon_finish': 0.05,
+    'epsilon_start': 1.0,
+    'evaluate': False,
+    'fix_grouping_steps': 2,
+    'fix_hgcn_steps': 2,
+    'gamma': 0.99,
+    'grad_norm_clip': 10,
+    'grouping_mode': 'dynamic',
+    'hgcn_hidden_dim': 64,
+    'hgcn_num_layers': 2,
+    'hgcn_out_dim': 48,
+    'hypernet_embed': 64,
+    'hypernet_layers': 2,
+    'label': 'default_label',
+    'lambda_attention': 0.01,
+    'lambda_consistency': 0.001,
+    'learner': 'hgcn_learner',
+    'learner_log_interval': 10000,
+    'load_step': 0,
+    'local_results_path': 'results',
+    'log_interval': 10000,
+    'lr': 0.0005,
+    'mac': 'hygma_mac',
+    'max_clusters': 3,
+    'min_clusters': 2,
+    'mixer': 'qmix',
+    'mixing_embed_dim': 32,
+    'name': 'hygma',
+    'obs_agent_id': True,
+    'obs_last_action': True,
+    'optim_alpha': 0.99,
+    'optim_beta1': 0.9,
+    'optim_beta2': 0.999,
+    'optim_eps': '1e-8',
+    'repeat_id': 1,
+    'rnn_hidden_dim': 64,
+    'runner': 'episode',
+    'runner_log_interval': 10000,
+    'save_model': True,
+    'save_model_interval': 1000000,
+    'save_replay': False,
+    'seed': 2,
+    'stability_threshold': 0.6,
+    'state_history_length': 5000,
+    't_max': 100000,
+    'target_update_interval': 200,
+    'test_greedy': True,
+    'test_interval': 5000,
+    'test_nepisode': 32,
+    'use_cuda': True,
+    'use_tensorboard': False,
+    'weight_decay': 0.01}
+
+[INFO 16:01:28] my_main AttentionDataCollector initialized: interval=5000, path=../results/attention_data
+[INFO 16:01:29] my_main Beginning training for 100000 timesteps
+[INFO 16:01:29] absl Launching SC2: /mnt/storage/qianhaoming/StarCraftII/Versions/Base75689/SC2_x64 -listen 127.0.0.1 -port 39329 -dataDir /mnt/storage/qianhaoming/StarCraftII/ -tempDir /tmp/sc-zovwicv6/
+[INFO 16:01:29] absl Connecting to: ws://127.0.0.1:39329/sc2api, attempt: 0, running: True
+Version: B75689 (SC2.4.10)
+Build: Aug 12 2019 17:16:57
+Command Line: '"/mnt/storage/qianhaoming/StarCraftII/Versions/Base75689/SC2_x64" -listen 127.0.0.1 -port 39329 -dataDir /mnt/storage/qianhaoming/StarCraftII/ -tempDir /tmp/sc-zovwicv6/'
+Starting up...
+Startup Phase 1 complete
+[INFO 16:01:30] absl Connecting to: ws://127.0.0.1:39329/sc2api, attempt: 1, running: True
+Startup Phase 2 complete
+Creating stub renderer...
+Listening on: 127.0.0.1:39329
+Startup Phase 3 complete. Ready for commands.
+[INFO 16:01:31] absl Connecting to: ws://127.0.0.1:39329/sc2api, attempt: 2, running: True
+ConnectHandler: Request from 127.0.0.1:46588 accepted
+ReadyHandler: 127.0.0.1:46588 ready
+Requesting to join a single player game
+Configuring interface options
+Configure: raw interface enabled
+Configure: feature layer interface disabled
+Configure: score interface disabled
+Configure: render interface disabled
+Launching next game.
+Next launch phase started: 2
+Next launch phase started: 3
+Next launch phase started: 4
+Next launch phase started: 5
+Next launch phase started: 6
+Next launch phase started: 7
+Next launch phase started: 8
+Game has started.
+Using default stable ids, none found at: /mnt/storage/qianhaoming/StarCraftII/stableid.json
+Successfully loaded stable ids: GameData\stableid.json
+Sending ResponseJoinGame
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /opt/conda/conda-bld/pytorch_1729647350383/work/torch/csrc/utils/tensor_new.cpp:278.)
+  v = th.tensor(v, dtype=dtype, device=self.device)
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:01:35] my_main t_env: 23 / 100000
+[INFO 16:01:35] my_main Estimated time left: 2 minutes, 9 seconds. Time passed: 6 seconds
+[INFO 16:01:48] my_main Saving models to results/models/hygma__2026-06-30_16-01-28/23
+[DEBUG 16:02:15] h5py._conv Creating converter from 5 to 3
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:02:57] my_main Updated target network HGCN from 1 to 2 groups at t_env 5041
+[INFO 16:02:57] my_main Updated target network
+[INFO 16:02:57] my_main t_env: 5041 / 100000
+[INFO 16:02:57] my_main Estimated time left: 25 minutes, 49 seconds. Time passed: 1 minutes, 28 seconds
+[INFO 16:03:13] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+[INFO 16:05:33] my_main Recent Stats | t_env:      10023 | Episode:      388
+agent_params:            32521.0000	attention_regularization: -6.0000	battle_won_mean:           0.0000	clustering_check_count:    0.5000
+clustering_diversity:      0.5000	clustering_effective_interval:5000.0000	clustering_n_clusters:     1.5000	clustering_num_groups:     1.5000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0022	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum:  1.5000	clustering_update_count:   0.5000	consistency_loss:          0.0002	dead_allies_mean:          2.9910
+dead_enemies_mean:         0.0000	ep_length_mean:           24.4199	epsilon:                   0.9050	grad_norm:                 0.7270
+hgcn_params:             46372.0000	hgcn_percentage:          36.2164	hgcn_time:                 0.1912	loss:                      0.0052
+mixer_params:            17761.0000	q_taken_mean:             -0.0597	return_mean:               1.6256	return_std:                0.3006
+target_mean:              -0.0121	td_error_abs:              0.1927	td_loss:                   0.0652	test_battle_won_mean:      0.0938
+test_dead_allies_mean:     1.3594	test_dead_enemies_mean:    0.7344	test_ep_length_mean:      42.3125	test_return_mean:          3.9854
+test_return_std:           2.9423	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.5287
+
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:05:33] my_main Updated target network HGCN from 3 to 2 groups at t_env 10048
+[INFO 16:05:33] my_main Updated target network
+[INFO 16:05:33] my_main t_env: 10048 / 100000
+[INFO 16:05:33] my_main Estimated time left: 46 minutes, 45 seconds. Time passed: 4 minutes, 4 seconds
+[INFO 16:05:57] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:08:22] my_main Updated target network
+[INFO 16:08:22] my_main t_env: 15054 / 100000
+[INFO 16:08:22] my_main Estimated time left: 47 minutes, 44 seconds. Time passed: 6 minutes, 53 seconds
+[INFO 16:10:53] my_main Updated target network
+[INFO 16:11:06] my_main Recent Stats | t_env:      20026 | Episode:      818
+agent_params:            32521.0000	attention_regularization: -6.5794	battle_won_mean:           0.0000	clustering_check_count:    2.0000
+clustering_diversity:      1.6000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.0000	clustering_num_groups:     2.0000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0020	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum:  4.8000	clustering_update_count:   1.6000	consistency_loss:          0.0056	dead_allies_mean:          2.9924
+dead_enemies_mean:         0.0047	ep_length_mean:           24.0342	epsilon:                   0.8100	grad_norm:                 0.3932
+hgcn_params:             46372.0000	hgcn_percentage:          36.3002	hgcn_time:                 0.1882	loss:                     -0.0287
+mixer_params:            17761.0000	q_taken_mean:              0.0860	return_mean:               1.7634	return_std:                0.4411
+target_mean:               0.1111	td_error_abs:              0.1320	td_loss:                   0.0371	test_battle_won_mean:      0.2031
+test_dead_allies_mean:     1.7734	test_dead_enemies_mean:    1.1562	test_ep_length_mean:      42.5859	test_return_mean:          6.5634
+test_return_std:           3.0586	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.5185
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:11:07] my_main Updated target network HGCN from 3 to 2 groups at t_env 20072
+[INFO 16:11:07] my_main Updated target network
+[INFO 16:11:07] my_main t_env: 20072 / 100000
+[INFO 16:11:07] my_main Estimated time left: 43 minutes, 53 seconds. Time passed: 9 minutes, 38 seconds
+[INFO 16:13:20] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:13:49] my_main t_env: 25081 / 100000
+[INFO 16:13:49] my_main Estimated time left: 40 minutes, 23 seconds. Time passed: 12 minutes, 20 seconds
+[INFO 16:15:36] my_main Updated target network
+[INFO 16:16:16] my_main Recent Stats | t_env:      30033 | Episode:     1271
+agent_params:            32521.0000	attention_regularization: -6.7726	battle_won_mean:           0.0000	clustering_check_count:    4.0000
+clustering_diversity:      2.0000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.0000	clustering_num_groups:     2.0000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0025	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum:  6.0000	clustering_update_count:   2.0000	consistency_loss:          0.0083	dead_allies_mean:          2.9921
+dead_enemies_mean:         0.0195	ep_length_mean:           23.5483	epsilon:                   0.7149	grad_norm:                 0.2848
+hgcn_params:             46372.0000	hgcn_percentage:          33.7084	hgcn_time:                 0.1381	loss:                     -0.0371
+mixer_params:            17761.0000	q_taken_mean:              0.2128	return_mean:               1.9472	return_std:                0.5501
+target_mean:               0.2302	td_error_abs:              0.1214	td_loss:                   0.0306	test_battle_won_mean:      0.2687
+test_dead_allies_mean:     2.4562	test_dead_enemies_mean:    1.5312	test_ep_length_mean:      30.9250	test_return_mean:          9.3723
+test_return_std:           4.7776	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.4094
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:16:18] my_main t_env: 30100 / 100000
+[INFO 16:16:18] my_main Estimated time left: 34 minutes, 26 seconds. Time passed: 14 minutes, 49 seconds
+[INFO 16:17:36] my_main Updated target network
+[INFO 16:17:55] my_main 计算开销 - 总训练时间: 0.4328s, 谱聚类时间: 0.0000s (0.00%), HGCN计算时间: 0.1469s (33.93%)
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:18:37] my_main t_env: 35103 / 100000
+[INFO 16:18:37] my_main Estimated time left: 30 minutes, 2 seconds. Time passed: 17 minutes, 8 seconds
+[INFO 16:19:34] my_main Updated target network
+[INFO 16:20:53] my_main Recent Stats | t_env:      40040 | Episode:     1741
+agent_params:            32521.0000	attention_regularization: -6.8692	battle_won_mean:           0.0000	clustering_check_count:    6.0000
+clustering_diversity:      2.0000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.0000	clustering_num_groups:     2.0000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0027	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum:  7.2000	clustering_update_count:   2.4000	consistency_loss:          0.0096	dead_allies_mean:          2.9933
+dead_enemies_mean:         0.0424	ep_length_mean:           23.0969	epsilon:                   0.6198	grad_norm:                 0.2449
+hgcn_params:             46372.0000	hgcn_percentage:          35.9523	hgcn_time:                 0.1599	loss:                     -0.0387
+mixer_params:            17761.0000	q_taken_mean:              0.3349	return_mean:               2.1359	return_std:                0.6356
+target_mean:               0.3471	td_error_abs:              0.1212	td_loss:                   0.0300	test_battle_won_mean:      0.5125
+test_dead_allies_mean:     2.3438	test_dead_enemies_mean:    2.1750	test_ep_length_mean:      23.4625	test_return_mean:         13.6795
+test_return_std:           5.7819	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.4433
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:20:55] my_main t_env: 40105 / 100000
+[INFO 16:20:55] my_main Estimated time left: 27 minutes, 32 seconds. Time passed: 19 minutes, 26 seconds
+[INFO 16:21:32] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:23:12] my_main t_env: 45114 / 100000
+[INFO 16:23:12] my_main Estimated time left: 25 minutes, 4 seconds. Time passed: 21 minutes, 43 seconds
+[INFO 16:23:30] my_main Updated target network
+[INFO 16:25:22] my_main Updated target network
+[INFO 16:25:25] my_main Recent Stats | t_env:      50049 | Episode:     2207
+agent_params:            32521.0000	attention_regularization: -7.2137	battle_won_mean:           0.0000	clustering_check_count:    8.0000
+clustering_diversity:      2.6000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.6000	clustering_num_groups:     2.6000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0029	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum: 10.2000	clustering_update_count:   3.6000	consistency_loss:          0.0077	dead_allies_mean:          2.9928
+dead_enemies_mean:         0.1252	ep_length_mean:           22.7926	epsilon:                   0.5247	grad_norm:                 0.2249
+hgcn_params:             46372.0000	hgcn_percentage:          34.0793	hgcn_time:                 0.1323	loss:                     -0.0419
+mixer_params:            17761.0000	q_taken_mean:              0.4288	return_mean:               2.5566	return_std:                0.8824
+target_mean:               0.4390	td_error_abs:              0.1220	td_loss:                   0.0303	test_battle_won_mean:      0.6062
+test_dead_allies_mean:     2.0250	test_dead_enemies_mean:    2.3438	test_ep_length_mean:      22.4688	test_return_mean:         14.9380
+test_return_std:           5.8484	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.3873
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:25:27] my_main t_env: 50114 / 100000
+[INFO 16:25:27] my_main Estimated time left: 22 minutes, 25 seconds. Time passed: 23 minutes, 58 seconds
+[INFO 16:27:19] my_main Updated target network
+RequestQuit command received.
+Closing Application...
+DataHandler: unable to parse websocket frame.
+CloseHandler: 127.0.0.1:46588 disconnected
+[INFO 16:27:19] absl Shutdown gracefully.
+[INFO 16:27:19] absl Shutdown with return code: -15
+[INFO 16:27:19] absl Launching SC2: /mnt/storage/qianhaoming/StarCraftII/Versions/Base75689/SC2_x64 -listen 127.0.0.1 -port 33581 -dataDir /mnt/storage/qianhaoming/StarCraftII/ -tempDir /tmp/sc-6pwggiw8/
+[INFO 16:27:19] absl Connecting to: ws://127.0.0.1:33581/sc2api, attempt: 0, running: True
+Version: B75689 (SC2.4.10)
+Build: Aug 12 2019 17:16:57
+Command Line: '"/mnt/storage/qianhaoming/StarCraftII/Versions/Base75689/SC2_x64" -listen 127.0.0.1 -port 33581 -dataDir /mnt/storage/qianhaoming/StarCraftII/ -tempDir /tmp/sc-6pwggiw8/'
+Starting up...
+Startup Phase 1 complete
+[INFO 16:27:20] absl Connecting to: ws://127.0.0.1:33581/sc2api, attempt: 1, running: True
+Startup Phase 2 complete
+Creating stub renderer...
+Listening on: 127.0.0.1:33581
+Startup Phase 3 complete. Ready for commands.
+[INFO 16:27:21] absl Connecting to: ws://127.0.0.1:33581/sc2api, attempt: 2, running: True
+ConnectHandler: Request from 127.0.0.1:56378 accepted
+ReadyHandler: 127.0.0.1:56378 ready
+Requesting to join a single player game
+Configuring interface options
+Configure: raw interface enabled
+Configure: feature layer interface disabled
+Configure: score interface disabled
+Configure: render interface disabled
+Launching next game.
+Next launch phase started: 2
+Next launch phase started: 3
+Next launch phase started: 4
+Next launch phase started: 5
+Next launch phase started: 6
+Next launch phase started: 7
+Next launch phase started: 8
+Game has started.
+Using default stable ids, none found at: /mnt/storage/qianhaoming/StarCraftII/stableid.json
+Successfully loaded stable ids: GameData\stableid.json
+Sending ResponseJoinGame
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:27:47] my_main t_env: 55114 / 100000
+[INFO 16:27:47] my_main Estimated time left: 20 minutes, 53 seconds. Time passed: 26 minutes, 17 seconds
+[INFO 16:29:20] my_main Updated target network
+[INFO 16:29:55] my_main Recent Stats | t_env:      60060 | Episode:     2665
+agent_params:            32521.0000	attention_regularization: -7.4454	battle_won_mean:           0.0004	clustering_check_count:   10.0000
+clustering_diversity:      3.6000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.4000	clustering_num_groups:     2.4000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0034	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum: 12.2000	clustering_update_count:   4.6000	consistency_loss:          0.0102	dead_allies_mean:          2.9938
+dead_enemies_mean:         0.2501	ep_length_mean:           21.9963	epsilon:                   0.4296	grad_norm:                 0.1130
+hgcn_params:             46372.0000	hgcn_percentage:          32.8664	hgcn_time:                 0.1278	loss:                     -0.0507
+mixer_params:            17761.0000	q_taken_mean:              0.6258	return_mean:               3.1235	return_std:                1.0462
+target_mean:               0.6270	td_error_abs:              0.1095	td_loss:                   0.0237	test_battle_won_mean:      0.5563
+test_dead_allies_mean:     2.1000	test_dead_enemies_mean:    2.3375	test_ep_length_mean:      22.7750	test_return_mean:         14.3733
+test_return_std:           6.0726	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.3898
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:29:57] my_main t_env: 60129 / 100000
+[INFO 16:29:57] my_main Estimated time left: 17 minutes, 15 seconds. Time passed: 28 minutes, 28 seconds
+[INFO 16:31:14] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+
+===== PARAMETER STATISTICS =====
+HGCN parameters: 46,372
+Agent parameters: 32,521
+Mixer parameters: 17,761
+Total parameters: 96,654
+Trainable parameters: 96,654
+===============================
+
+[ClusteringCSVLogger] Opened: ../results/clustering_logs/3m_dynamic_seed2.csv
+Clustering check triggered at t_env: 5014, interval = 5000, Last clustering step: 0, Time since last clustering: 5014
+now groups: [[0, 1, 2]]
+Groups updated at t_env: 5014. Moved agents: 3/3, silhouette=0.657, n_clusters=3, reason=first_init, diversity=1, new groups: [[1], [0, 2]]
+Clustering at step 5014 took 0.2455 seconds
+[ClusteringCSVLogger] Opened: ../results/clustering_logs/3m_dynamic_seed2.csv
+Clustering check triggered at t_env: 5014, interval = 5000, Last clustering step: 0, Time since last clustering: 5014
+now groups: [[0, 1, 2]]
+Groups updated at t_env: 5014. Moved agents: 3/3, silhouette=0.628, n_clusters=3, reason=first_init, diversity=1, new groups: [[0, 1, 2]]
+Clustering at step 5014 took 0.0281 seconds
+Clustering check triggered at t_env: 10023, interval = 5000, Last clustering step: 5014, Time since last clustering: 5009
+now groups: [[1], [0, 2]]
+Groups updated at t_env: 10023. Moved agents: 3/3, silhouette=0.692, n_clusters=3, reason=updated, diversity=2, new groups: [[0], [1, 2]]
+Clustering at step 10023 took 0.0259 seconds
+Clustering check triggered at t_env: 10023, interval = 5000, Last clustering step: 5014, Time since last clustering: 5009
+now groups: [[1], [0, 2]]
+Groups updated at t_env: 10023. Moved agents: 3/3, silhouette=0.547, n_clusters=3, reason=updated, diversity=2, new groups: [[0], [2], [1]]
+Clustering at step 10023 took 0.0402 seconds
+Clustering check triggered at t_env: 15031, interval = 5000, Last clustering step: 10023, Time since last clustering: 5008
+now groups: [[0], [1, 2]]
+Groups unchanged at t_env: 15031. Reason: same_group. No potential moves, silhouette=0.553
+Clustering at step 15031 took 0.0264 seconds
+Clustering check triggered at t_env: 15031, interval = 5000, Last clustering step: 10023, Time since last clustering: 5008
+now groups: [[0], [1, 2]]
+Groups updated at t_env: 15031. Moved agents: 2/3, silhouette=0.697, n_clusters=3, reason=updated, diversity=3, new groups: [[1, 2], [0]]
+Clustering at step 15031 took 0.0264 seconds
+Clustering check triggered at t_env: 20053, interval = 5000, Last clustering step: 15031, Time since last clustering: 5022
+now groups: [[0], [1, 2]]
+Groups unchanged at t_env: 20053. Reason: same_group. No potential moves, silhouette=0.732
+Clustering at step 20053 took 0.0256 seconds
+Clustering check triggered at t_env: 20053, interval = 5000, Last clustering step: 15031, Time since last clustering: 5022
+now groups: [[0], [1, 2]]
+Groups updated at t_env: 20053. Moved agents: 2/3, silhouette=0.528, n_clusters=3, reason=updated, diversity=3, new groups: [[1], [2], [0]]
+Clustering at step 20053 took 0.0283 seconds
+Clustering check triggered at t_env: 25060, interval = 5000, Last clustering step: 20053, Time since last clustering: 5007
+now groups: [[0], [1, 2]]
+Groups unchanged at t_env: 25060. Reason: same_group. No potential moves, silhouette=0.693
+Clustering at step 25060 took 0.0238 seconds
+Clustering check triggered at t_env: 25060, interval = 5000, Last clustering step: 20053, Time since last clustering: 5007
+now groups: [[0], [1, 2]]
+Groups updated at t_env: 25060. Moved agents: 2/3, silhouette=0.525, n_clusters=3, reason=updated, diversity=3, new groups: [[1, 2], [0]]
+Clustering at step 25060 took 0.0317 seconds
+Clustering check triggered at t_env: 30080, interval = 5000, Last clustering step: 25060, Time since last clustering: 5020
+now groups: [[0], [1, 2]]
+Groups unchanged at t_env: 30080. Reason: same_group. No potential moves, silhouette=0.578
+Clustering at step 30080 took 0.0253 seconds
+Clustering check triggered at t_env: 30080, interval = 5000, Last clustering step: 25060, Time since last clustering: 5020
+now groups: [[0], [1, 2]]
+Groups unchanged at t_env: 30080. Reason: same_group. No potential moves, silhouette=0.578
+Clustering at step 30080 took 0.0266 seconds
+Clustering check triggered at t_env: 35080, interval = 5000, Last clustering step: 30080, Time since last clustering: 5000
+now groups: [[0], [1, 2]]
+Groups updated at t_env: 35080. Moved agents: 3/3, silhouette=0.725, n_clusters=3, reason=updated, diversity=2, new groups: [[0, 2], [1]]
+Clustering at step 35080 took 0.0254 seconds
+Clustering check triggered at t_env: 35080, interval = 5000, Last clustering step: 30080, Time since last clustering: 5000
+now groups: [[0], [1, 2]]
+Groups updated at t_env: 35080. Moved agents: 3/3, silhouette=0.725, n_clusters=3, reason=updated, diversity=4, new groups: [[0, 2], [1]]
+Clustering at step 35080 took 0.0258 seconds
+Clustering check triggered at t_env: 40083, interval = 5000, Last clustering step: 35080, Time since last clustering: 5003
+now groups: [[0, 2], [1]]
+Groups updated at t_env: 40083. Moved agents: 2/3, silhouette=0.701, n_clusters=3, reason=updated, diversity=3, new groups: [[1], [0], [2]]
+Clustering at step 40083 took 0.0257 seconds
+Clustering check triggered at t_env: 40083, interval = 5000, Last clustering step: 35080, Time since last clustering: 5003
+now groups: [[0, 2], [1]]
+Groups updated at t_env: 40083. Moved agents: 2/3, silhouette=0.701, n_clusters=3, reason=updated, diversity=4, new groups: [[0], [1], [2]]
+Clustering at step 40083 took 0.0256 seconds
+Clustering check triggered at t_env: 45093, interval = 5000, Last clustering step: 40083, Time since last clustering: 5010
+now groups: [[1], [0], [2]]
+Groups unchanged at t_env: 45093. Reason: same_group. No potential moves, silhouette=0.756
+Clustering at step 45093 took 0.0243 seconds
+Clustering check triggered at t_env: 45093, interval = 5000, Last clustering step: 40083, Time since last clustering: 5010
+now groups: [[1], [0], [2]]
+Groups unchanged at t_env: 45093. Reason: same_group. No potential moves, silhouette=0.756
+Clustering at step 45093 took 0.0259 seconds
+Clustering check triggered at t_env: 50094, interval = 5000, Last clustering step: 45093, Time since last clustering: 5001
+now groups: [[1], [0], [2]]
+Groups updated at t_env: 50094. Moved agents: 2/3, silhouette=0.602, n_clusters=3, reason=updated, diversity=4, new groups: [[0, 1], [2]]
+Clustering at step 50094 took 0.0249 seconds
+Clustering check triggered at t_env: 50094, interval = 5000, Last clustering step: 45093, Time since last clustering: 5001
+now groups: [[1], [0], [2]]
+Groups updated at t_env: 50094. Moved agents: 2/3, silhouette=0.602, n_clusters=3, reason=updated, diversity=5, new groups: [[0, 1], [2]]
+Clustering at step 50094 took 0.0255 seconds
+Clustering check triggered at t_env: 55094, interval = 5000, Last clustering step: 50094, Time since last clustering: 5000
+now groups: [[0, 1], [2]]
+Groups unchanged at t_env: 55094. Reason: same_group. No potential moves, silhouette=0.737
+Clustering at step 55094 took 0.0263 seconds
+Clustering check triggered at t_env: 55094, interval = 5000, Last clustering step: 50094, Time since last clustering: 5000
+now groups: [[0, 1], [2]]
+Groups unchanged at t_env: 55094. Reason: same_group. No potential moves, silhouette=0.737
+Clustering at step 55094 took 0.0259 seconds
+Clustering check triggered at t_env: 60105, interval = 5000, Last clustering step: 55094, Time since last clustering: 5011
+now groups: [[0, 1], [2]]
+Groups updated at t_env: 60105. Moved agents: 2/3, silhouette=0.756, n_clusters=3, reason=updated, diversity=4, new groups: [[1], [0], [2]]
+Clustering at step 60105 took 0.0253 seconds
+Clustering check triggered at t_env: 60105, interval = 5000, Last clustering step: 55094, Time since last clustering: 5011
+now groups: [[0, 1], [2]]
+Groups updated at t_env: 60105. Moved agents: 2/3, silhouette=0.756, n_clusters=3, reason=updated, diversity=5, new groups: [[1], [2], [0]]
+Clustering at step 60105 took 0.0259 seconds
+Clustering check triggered at t_env: 65117, interval = 5000, Last clustering step: 60105, Time since last clustering: 5012
+now groups: [[1], [0], [2]]
+Groups updated at t_env: 65117. Moved agents: 2/3, silhouette=0.754, n_clusters=3, reason=updated, diversity=4, new groups: [[2], [0, 1]]
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:32:04] my_main t_env: 65140 / 100000
+[INFO 16:32:04] my_main Estimated time left: 14 minutes, 44 seconds. Time passed: 30 minutes, 35 seconds
+[INFO 16:33:11] my_main Updated target network
+[INFO 16:34:03] my_main Recent Stats | t_env:      70063 | Episode:     3092
+agent_params:            32521.0000	attention_regularization: -7.7320	battle_won_mean:           0.0065	clustering_check_count:   12.0000
+clustering_diversity:      4.0000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.2000	clustering_num_groups:     2.2000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0026	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum: 15.0000	clustering_update_count:   6.0000	consistency_loss:          0.0080	dead_allies_mean:          2.9826
+dead_enemies_mean:         0.4286	ep_length_mean:           22.0290	epsilon:                   0.3346	grad_norm:                 0.3202
+hgcn_params:             46372.0000	hgcn_percentage:          34.1072	hgcn_time:                 0.1462	loss:                     -0.0481
+mixer_params:            17761.0000	q_taken_mean:              0.7752	return_mean:               3.8467	return_std:                1.4615
+target_mean:               0.7792	td_error_abs:              0.1227	td_loss:                   0.0292	test_battle_won_mean:      0.5750
+test_dead_allies_mean:     2.0187	test_dead_enemies_mean:    2.3563	test_ep_length_mean:      23.0562	test_return_mean:         14.6209
+test_return_std:           5.9412	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.4287
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:34:05] my_main Updated target network HGCN from 3 to 2 groups at t_env 70165
+[INFO 16:34:05] my_main Updated target network
+[INFO 16:34:05] my_main t_env: 70165 / 100000
+[INFO 16:34:05] my_main Estimated time left: 11 minutes, 57 seconds. Time passed: 32 minutes, 36 seconds
+[INFO 16:35:10] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:35:58] my_main t_env: 75168 / 100000
+[INFO 16:35:58] my_main Estimated time left: 9 minutes, 19 seconds. Time passed: 34 minutes, 29 seconds
+[INFO 16:37:09] my_main Updated target network
+[INFO 16:37:47] my_main Recent Stats | t_env:      80064 | Episode:     3467
+agent_params:            32521.0000	attention_regularization: -7.7320	battle_won_mean:           0.0225	clustering_check_count:   14.0000
+clustering_diversity:      4.0000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.0000	clustering_num_groups:     2.0000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0031	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum: 18.8000	clustering_update_count:   7.6000	consistency_loss:          0.0105	dead_allies_mean:          2.9609
+dead_enemies_mean:         0.6766	ep_length_mean:           22.9447	epsilon:                   0.2397	grad_norm:                 0.5960
+hgcn_params:             46372.0000	hgcn_percentage:          33.5348	hgcn_time:                 0.1159	loss:                     -0.0418
+mixer_params:            17761.0000	q_taken_mean:              0.9040	return_mean:               4.7636	return_std:                2.0832
+target_mean:               0.9044	td_error_abs:              0.1330	td_loss:                   0.0355	test_battle_won_mean:      0.5062
+test_dead_allies_mean:     2.1688	test_dead_enemies_mean:    2.2625	test_ep_length_mean:      25.0750	test_return_mean:         13.5849
+test_return_std:           6.2535	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.3441
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+[INFO 16:37:49] my_main t_env: 80170 / 100000
+[INFO 16:37:49] my_main Estimated time left: 7 minutes, 22 seconds. Time passed: 36 minutes, 20 seconds
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:39:11] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+[INFO 16:39:43] my_main t_env: 85171 / 100000
+[INFO 16:39:43] my_main Estimated time left: 5 minutes, 37 seconds. Time passed: 38 minutes, 14 seconds
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:41:10] my_main Updated target network
+[INFO 16:41:39] my_main Recent Stats | t_env:      90087 | Episode:     3852
+agent_params:            32521.0000	attention_regularization: -7.7320	battle_won_mean:           0.0579	clustering_check_count:   16.0000
+clustering_diversity:      4.0000	clustering_effective_interval:5000.0000	clustering_n_clusters:     2.0000	clustering_num_groups:     2.0000
+clustering_num_moved:      0.0000	clustering_percentage:     0.0034	clustering_probe_mode:     1.0000	clustering_time:           0.0000
+clustering_total_moved_cum: 21.8000	clustering_update_count:   8.6000	consistency_loss:          0.0132	dead_allies_mean:          2.9042
+dead_enemies_mean:         0.9542	ep_length_mean:           23.8932	epsilon:                   0.1444	grad_norm:                 0.8281
+hgcn_params:             46372.0000	hgcn_percentage:          33.5575	hgcn_time:                 0.1280	loss:                     -0.0311
+mixer_params:            17761.0000	q_taken_mean:              1.0032	return_mean:               5.9274	return_std:                2.9563
+target_mean:               1.0010	td_error_abs:              0.1436	td_loss:                   0.0462	test_battle_won_mean:      0.6188
+test_dead_allies_mean:     2.0125	test_dead_enemies_mean:    2.4375	test_ep_length_mean:      26.9312	test_return_mean:         14.9979
+test_return_std:           6.0970	total_params:            96654.0000	trainable_params:        96654.0000	training_time:             0.3802
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+[INFO 16:41:41] my_main t_env: 90189 / 100000
+[INFO 16:41:41] my_main Estimated time left: 3 minutes, 49 seconds. Time passed: 40 minutes, 12 seconds
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:41:47] my_main Updated target network HGCN from 1 to 2 groups at t_env 90216
+[INFO 16:41:47] my_main Updated target network
+[INFO 16:43:10] my_main Updated target network
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sklearn/manifold/_spectral_embedding.py:329: UserWarning: Graph is not fully connected, spectral embedding may not work as expected.
+  warnings.warn(
+[INFO 16:43:36] my_main t_env: 95192 / 100000
+[INFO 16:43:36] my_main Estimated time left: 1 minutes, 50 seconds. Time passed: 42 minutes, 7 seconds
+/mnt/storage/qianhaoming/paper/HYGMA/src/components/episode_buffer.py:96: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  v = th.tensor(v, dtype=dtype, device=self.device)
+[INFO 16:45:04] my_main Updated target network
+RequestQuit command received.
+Closing Application...
+DataHandler: unable to parse websocket frame.
+CloseHandler: 127.0.0.1:56378 disconnected
+[INFO 16:45:32] absl Shutdown gracefully.
+[INFO 16:45:32] absl Shutdown with return code: -15
+[INFO 16:45:32] my_main Finished Training

@@ -1,0 +1,162 @@
+{
+  "created_at": "2026-06-30T15:12:35.780539",
+  "python_executable": "/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/bin/python",
+  "root": "/mnt/storage/qianhaoming/paper/HYGMA",
+  "src": "/mnt/storage/qianhaoming/paper/HYGMA/src",
+  "run_dir": "/mnt/storage/qianhaoming/paper/HYGMA/results/launcher_logs/mechanism_batch_2026-06-30_15-12-35",
+  "experiments": [
+    {
+      "tag": "M1",
+      "desc": "3m dynamic sanity seed1",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=3m",
+        "t_max=100000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=1",
+        "grouping_mode=dynamic",
+        "clustering_interval=5000",
+        "clustering_probe_mode=on",
+        "clustering_min_steps=100000",
+        "clustering_min_checks=20",
+        "clustering_min_updates=1"
+      ]
+    },
+    {
+      "tag": "M2",
+      "desc": "3m dynamic sanity seed2",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=3m",
+        "t_max=100000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=2",
+        "grouping_mode=dynamic",
+        "clustering_interval=5000",
+        "clustering_probe_mode=on",
+        "clustering_min_steps=100000",
+        "clustering_min_checks=20",
+        "clustering_min_updates=1"
+      ]
+    },
+    {
+      "tag": "N1",
+      "desc": "5m_vs_6m dynamic mechanism seed1",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=5m_vs_6m",
+        "t_max=500000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=1",
+        "grouping_mode=dynamic",
+        "clustering_interval=5000",
+        "clustering_probe_mode=on",
+        "clustering_min_steps=500000",
+        "clustering_min_checks=100",
+        "clustering_min_updates=1"
+      ]
+    },
+    {
+      "tag": "N2",
+      "desc": "5m_vs_6m dynamic mechanism seed2",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=5m_vs_6m",
+        "t_max=500000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=2",
+        "grouping_mode=dynamic",
+        "clustering_interval=5000",
+        "clustering_probe_mode=on",
+        "clustering_min_steps=500000",
+        "clustering_min_checks=100",
+        "clustering_min_updates=1"
+      ]
+    },
+    {
+      "tag": "N3",
+      "desc": "5m_vs_6m dynamic mechanism seed3",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=5m_vs_6m",
+        "t_max=500000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=3",
+        "grouping_mode=dynamic",
+        "clustering_interval=5000",
+        "clustering_probe_mode=on",
+        "clustering_min_steps=500000",
+        "clustering_min_checks=100",
+        "clustering_min_updates=1"
+      ]
+    },
+    {
+      "tag": "B1",
+      "desc": "5m_vs_6m all_one baseline seed1",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=5m_vs_6m",
+        "t_max=500000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=1",
+        "grouping_mode=all_one",
+        "clustering_interval=5000",
+        "clustering_probe_mode=off",
+        "clustering_min_steps=0",
+        "clustering_min_checks=0",
+        "clustering_min_updates=0"
+      ]
+    },
+    {
+      "tag": "B2",
+      "desc": "5m_vs_6m each_alone baseline seed1",
+      "args": [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=5m_vs_6m",
+        "t_max=500000",
+        "test_interval=5000",
+        "attention_record_interval=5000",
+        "seed=1",
+        "grouping_mode=each_alone",
+        "clustering_interval=5000",
+        "clustering_probe_mode=off",
+        "clustering_min_steps=0",
+        "clustering_min_checks=0",
+        "clustering_min_updates=0"
+      ]
+    },
+    {
+      "tag": "B3",
+      "desc": "5m_vs_6m qmix baseline seed1",
+      "args": [
+        "--config=qmix",
+        "--env-config=sc2",
+        "with",
+        "env_args.map_name=5m_vs_6m",
+        "t_max=500000",
+        "test_interval=5000",
+        "seed=1"
+      ]
+    }
+  ]
+}
