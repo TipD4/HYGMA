@@ -1,5 +1,6 @@
 import time
 
+import numpy as np
 import torch
 from modules.agents import REGISTRY as agent_REGISTRY
 from components.action_selectors import REGISTRY as action_REGISTRY
@@ -44,8 +45,9 @@ class HYGMA(nn.Module):
         if self.grouping_mode == "each_alone":
             self.agent_groups = [[i] for i in range(self.n_agents)]  # 每人独立一组
         else:
-            self.agent_groups = [list(range(self.n_agents))]  # all_one 或 dynamic 初始同组
+            self.agent_groups = [list(range(self.n_agents))]  # all_one / dynamic / random 初始同组
         self.last_clustering_info = None
+        self.last_debug_info = None   # debug metrics updated each forward
 
         # Stage 2: 聚类活性统计
         self.clustering_stats = {
@@ -233,6 +235,19 @@ class HYGMA(nn.Module):
                         print(f"[ClusteringProbe] {msg}")
                         self.clustering_probe_warning_issued = True
 
+        # ── random grouping branch ──
+        if self.grouping_mode == "random" and not test_mode and self.training_steps >= self.fix_grouping_steps:
+            clustering_interval = self._get_active_clustering_interval(t_env)
+            if clustering_interval is not None and t_env - self.last_clustering_step >= clustering_interval:
+                new_groups = self._random_group_update()
+                old_groups = self.agent_groups
+                groups_changed = (new_groups != old_groups)
+                print(f"Random shuffle at t_env={t_env}: old={old_groups}, new={new_groups}, changed={groups_changed}")
+                if groups_changed:
+                    self.agent_groups = new_groups
+                    self.hgcn.update_groups(len(new_groups))
+                self.last_clustering_step = t_env
+
         # 重塑 agent_inputs，确保其形状适合 HGCN
         agent_inputs = agent_inputs.view(ep_batch.batch_size, self.n_agents, -1)
 
@@ -244,6 +259,9 @@ class HYGMA(nn.Module):
         # HGCN输出的特征只包含组内共享信息，因此后续与原始输入结合
         hgcn_features = self.hgcn(agent_inputs, hypergraph)
         hgcn_time = time.time() - start_time
+
+        # ── debug metrics (computed every forward) ──
+        self.last_debug_info = self._compute_debug_metrics(hgcn_features, agent_inputs)
 
         # 特征结合：将HGCN特征与原始输入结合
         combined_inputs = th.cat([agent_inputs, hgcn_features], dim=-1)
@@ -289,6 +307,54 @@ class HYGMA(nn.Module):
             return self._mechanism_probe_interval
 
         return self.clustering_interval
+
+    def _random_group_update(self):
+        """Assign agents to k random groups (k in [min_clusters, max_clusters])."""
+        rng = np.random.RandomState(seed=getattr(self.args, "seed", 0) + self.t_env)
+        k = int(rng.randint(low=self.args.min_clusters, high=self.args.max_clusters + 1))
+        indices = list(range(self.n_agents))
+        rng.shuffle(indices)
+        groups = [[] for _ in range(k)]
+        for i, agent_idx in enumerate(indices):
+            groups[i % k].append(agent_idx)
+        return groups
+
+    def _compute_debug_metrics(self, hgcn_features, agent_inputs):
+        """Compute group entropy, attention entropy, HGCN output norm, agent embedding variance."""
+        info = {}
+        batch_size, n_agents, feat_dim = hgcn_features.shape
+
+        # HGCN output norm: mean L2 norm across agents & batch
+        norms = th.norm(hgcn_features, p=2, dim=-1)  # (B, N)
+        info["hgcn_output_norm"] = norms.mean().item()
+
+        # Agent embedding variance: variance of hgcn features across agents (per-batch mean)
+        var_across_agents = hgcn_features.var(dim=1, unbiased=False).mean().item()
+        info["agent_embedding_variance"] = var_across_agents
+
+        # Group entropy: -sum((sz/N) * log(sz/N))  (0 if all_one or each_alone)
+        group_sizes = [len(g) for g in self.agent_groups]
+        if len(group_sizes) > 0:
+            props = th.tensor([s / self.n_agents for s in group_sizes], dtype=th.float32)
+            entropy = -(props * th.log(props + 1e-10)).sum().item()
+            info["group_entropy"] = entropy
+        else:
+            info["group_entropy"] = 0.0
+
+        # Attention entropy: mean entropy over attention weights from HGCN layers
+        attn_weights_list = self.hgcn.get_attention_weights()
+        if attn_weights_list and len(attn_weights_list) > 0:
+            entropies = []
+            for w in attn_weights_list:  # each shape (B, n_agents, n_groups) or similar
+                w_flat = w.reshape(-1, w.shape[-1])
+                probs = th.softmax(w_flat, dim=-1)
+                ent = -(probs * th.log(probs + 1e-10)).sum(dim=-1).mean()
+                entropies.append(ent.item())
+            info["attention_entropy"] = float(np.mean(entropies))
+        else:
+            info["attention_entropy"] = -1.0  # no attention weights available
+
+        return info
 
     def _create_hypergraph(self, groups, batch_size):
         """

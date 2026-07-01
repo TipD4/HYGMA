@@ -79,6 +79,54 @@ def qmix_spec(tag: str, desc: str, map_name: str, t_max: int, seed: int):
     return {"tag": tag, "desc": desc, "args": args}
 
 
+def qmix_hgcn_spec(tag, desc, map_name, t_max, seed, grouping_mode="each_alone"):
+    args = [
+        "--config=ablation_qmix_hgcn",
+        "--env-config=sc2",
+        "with",
+        f"env_args.map_name={map_name}",
+        f"t_max={t_max}",
+        f"test_interval={TEST_INTERVAL}",
+        f"seed={seed}",
+        f"grouping_mode={grouping_mode}",
+    ]
+    return {"tag": tag, "desc": desc, "args": args}
+
+
+def random_group_spec(tag, desc, map_name, t_max, seed):
+    args = [
+        "--config=hygma",
+        "--env-config=sc2",
+        "with",
+        f"env_args.map_name={map_name}",
+        f"t_max={t_max}",
+        f"test_interval={TEST_INTERVAL}",
+        f"seed={seed}",
+        "grouping_mode=random",
+        "learner=q_learner",
+        "clustering_interval=5000",
+        "clustering_probe_mode=off",
+    ]
+    return {"tag": tag, "desc": desc, "args": args}
+
+
+def build_ablation_experiments():
+    return [
+        qmix_hgcn_spec("A1-1", "5m_vs_6m qmix+hgcn s1", "5m_vs_6m", 500000, 1),
+        qmix_hgcn_spec("A1-2", "5m_vs_6m qmix+hgcn s2", "5m_vs_6m", 500000, 2),
+        qmix_hgcn_spec("A1-3", "5m_vs_6m qmix+hgcn s3", "5m_vs_6m", 500000, 3),
+        random_group_spec("B1-1", "5m_vs_6m random_group s1", "5m_vs_6m", 500000, 1),
+        qmix_spec("C1a-2", "5m_vs_6m qmix s2", "5m_vs_6m", 500000, 2),
+        qmix_spec("C1a-3", "5m_vs_6m qmix s3", "5m_vs_6m", 500000, 3),
+        hygma_spec("C1b-2", "5m_vs_6m each_alone s2", "5m_vs_6m", 500000, 2,
+                   grouping_mode="each_alone", clustering_interval=5000,
+                   probe_mode=False, probe_steps=0, probe_checks=0, probe_updates=0),
+        hygma_spec("C1b-3", "5m_vs_6m each_alone s3", "5m_vs_6m", 500000, 3,
+                   grouping_mode="each_alone", clustering_interval=5000,
+                   probe_mode=False, probe_steps=0, probe_checks=0, probe_updates=0),
+    ]
+
+
 def build_experiments():
     return [
         hygma_spec(
@@ -243,9 +291,14 @@ def run_one(python_exe: str, exp: dict, run_dir: Path):
 
 def main():
     python_exe = choose_python()
-    experiments = build_experiments()
+    if "--ablation" in sys.argv:
+        experiments = build_ablation_experiments()
+        batch_name = "ablation_batch"
+    else:
+        experiments = build_experiments()
+        batch_name = "mechanism_batch"
     stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    run_dir = ROOT / "results" / "launcher_logs" / f"mechanism_batch_{stamp}"
+    run_dir = ROOT / "results" / "launcher_logs" / f"{batch_name}_{stamp}"
     run_dir.mkdir(parents=True, exist_ok=True)
 
     manifest = {

@@ -127,3 +127,9 @@ class EpisodeRunner:
             for k, v in self.mac.last_clustering_info.items():
                 if isinstance(v, (int, float)):  # 只记录数值型统计
                     self.logger.log_stat("clustering_" + k, v, self.t_env)
+
+        # 记录 debug metrics（HGCN output norm, attention entropy, group entropy, etc.）
+        if hasattr(self.mac, 'last_debug_info') and self.mac.last_debug_info:
+            for k, v in self.mac.last_debug_info.items():
+                if isinstance(v, (int, float)):
+                    self.logger.log_stat("debug_" + k, v, self.t_env)
