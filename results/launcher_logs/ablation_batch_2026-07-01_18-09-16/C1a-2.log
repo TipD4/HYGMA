@@ -1,0 +1,7 @@
+START 2026-07-01T18:09:18.231678
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=2
+
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'

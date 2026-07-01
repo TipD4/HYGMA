@@ -1,0 +1,24 @@
+START 2026-07-01T18:14:59.888828
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/bin/python main.py --config=ablation_qmix_hgcn --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=3 grouping_mode=each_alone
+
+/mnt/storage/qianhaoming/Tool/anaconda3/envs/hygma/lib/python3.9/site-packages/sacred/dependencies.py:11: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+/mnt/storage/qianhaoming/paper/HYGMA/src/main.py:77: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  if isinstance(v, collections.Mapping):
+[INFO 18:15:01] root Saving to FileStorageObserver in results/sacred.
+[DEBUG 18:15:02] pymarl Using capture mode "fd"
+[INFO 18:15:02] pymarl Running command 'my_main'
+[INFO 18:15:02] pymarl Started run with ID "20"
+[DEBUG 18:15:02] pymarl Starting Heartbeat
+[DEBUG 18:15:02] my_main Started
+[DEBUG 18:15:02] pymarl Stopping Heartbeat
+[ERROR 18:15:02] pymarl Failed after 0:00:00!
+Traceback (most recent calls WITHOUT Sacred internals):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 35, in my_main
+    exp_logger = run(_run, config, _log)
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/run.py", line 22, in run
+    _config = args_sanity_check(_config, _log)
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/run.py", line 224, in args_sanity_check
+    if config["test_nepisode"] < config["batch_size_run"]:
+KeyError: 'batch_size_run'
+

@@ -1,0 +1,79 @@
+HYGMA mechanism-first batch: 8 experiments
+Python: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python
+Logs:   /mnt/storage/qianhaoming/paper/HYGMA/results/launcher_logs/ablation_batch_2026-07-01_18-09-16
+
+=== [1/8] A1-1 5m_vs_6m qmix+hgcn s1 ===
+[2026-07-01 18:09:16] START A1-1: 5m_vs_6m qmix+hgcn s1
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=ablation_qmix_hgcn --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=1 grouping_mode=each_alone
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:17] END A1-1 exit=1 duration=0:00:00.937767
+
+=== [2/8] A1-2 5m_vs_6m qmix+hgcn s2 ===
+[2026-07-01 18:09:17] START A1-2: 5m_vs_6m qmix+hgcn s2
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=ablation_qmix_hgcn --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=2 grouping_mode=each_alone
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END A1-2 exit=1 duration=0:00:00.114227
+
+=== [3/8] A1-3 5m_vs_6m qmix+hgcn s3 ===
+[2026-07-01 18:09:18] START A1-3: 5m_vs_6m qmix+hgcn s3
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=ablation_qmix_hgcn --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=3 grouping_mode=each_alone
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END A1-3 exit=1 duration=0:00:00.111902
+
+=== [4/8] B1-1 5m_vs_6m random_group s1 ===
+[2026-07-01 18:09:18] START B1-1: 5m_vs_6m random_group s1
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=hygma --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=1 grouping_mode=random learner=q_learner clustering_interval=5000 clustering_probe_mode=off
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END B1-1 exit=1 duration=0:00:00.117998
+
+=== [5/8] C1a-2 5m_vs_6m qmix s2 ===
+[2026-07-01 18:09:18] START C1a-2: 5m_vs_6m qmix s2
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=2
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END C1a-2 exit=1 duration=0:00:00.113972
+
+=== [6/8] C1a-3 5m_vs_6m qmix s3 ===
+[2026-07-01 18:09:18] START C1a-3: 5m_vs_6m qmix s3
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=qmix --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 seed=3
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END C1a-3 exit=1 duration=0:00:00.112611
+
+=== [7/8] C1b-2 5m_vs_6m each_alone s2 ===
+[2026-07-01 18:09:18] START C1b-2: 5m_vs_6m each_alone s2
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=hygma --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 attention_record_interval=5000 seed=2 grouping_mode=each_alone clustering_interval=5000 clustering_probe_mode=off clustering_min_steps=0 clustering_min_checks=0 clustering_min_updates=0
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END C1b-2 exit=1 duration=0:00:00.116019
+
+=== [8/8] C1b-3 5m_vs_6m each_alone s3 ===
+[2026-07-01 18:09:18] START C1b-3: 5m_vs_6m each_alone s3
+COMMAND: /mnt/storage/qianhaoming/Tool/anaconda3/bin/python main.py --config=hygma --env-config=sc2 with env_args.map_name=5m_vs_6m t_max=500000 test_interval=5000 attention_record_interval=5000 seed=3 grouping_mode=each_alone clustering_interval=5000 clustering_probe_mode=off clustering_min_steps=0 clustering_min_checks=0 clustering_min_updates=0
+Traceback (most recent call last):
+  File "/mnt/storage/qianhaoming/paper/HYGMA/src/main.py", line 6, in <module>
+    from sacred import Experiment, SETTINGS
+ModuleNotFoundError: No module named 'sacred'
+[2026-07-01 18:09:18] END C1b-3 exit=1 duration=0:00:00.116239
+
+Batch complete.
+Summary: /mnt/storage/qianhaoming/paper/HYGMA/results/launcher_logs/ablation_batch_2026-07-01_18-09-16/final_summary.json
+Failed experiments: A1-1, A1-2, A1-3, B1-1, C1a-2, C1a-3, C1b-2, C1b-3
